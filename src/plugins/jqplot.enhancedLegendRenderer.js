@@ -61,6 +61,9 @@
         // true to toggle series with a show/hide method only and not allow fading in/out.  
         // This is to overcome poor performance of fade in some versions of IE.
         this.disableIEFading = true;
+        // prop: showLineStyle
+        // true to draw the correct lineStyle and lineWidth in the legends' swatch, not only a colored box.
+        this.showLineStyle = false;
         $.extend(true, this, options);
         
         if (this.seriesToggle) {
@@ -155,15 +158,29 @@
                             td1 = $(document.createElement('td'));
                             td1.addClass('jqplot-table-legend jqplot-table-legend-swatch');
                             td1.css({textAlign: 'center', paddingTop: rs});
-
-                            div0 = $(document.createElement('div'));
-                            div0.addClass('jqplot-table-legend-swatch-outline');
-                            div1 = $(document.createElement('div'));
-                            div1.addClass('jqplot-table-legend-swatch');
-                            div1.css({backgroundColor: color, borderColor: color});
-
-                            td1.append(div0.append(div1));
-
+                            if (this.showLineStyle == true) {
+                                var canvas0 = $(document.createElement('canvas'));
+                                canvas0.attr('width', '32px');
+                                canvas0.attr('height', '14px');
+                                var ctx = canvas0[0].getContext('2d');
+                                var pat = $.jqplot.LinePattern(ctx, s.linePattern);
+                                ctx.strokeStyle = s.color;
+                                ctx.lineWidth = s.lineWidth;
+                                pat.beginPath();
+                                pat.moveTo(1,8);
+                                pat.lineTo(31,8);
+                                pat.closePath();
+                                ctx.stroke();
+                                td1.append(canvas0);
+                            } else {
+                                div0 = $(document.createElement('div'));
+                                div0.addClass('jqplot-table-legend-swatch-outline');
+                                div1 = $(document.createElement('div'));
+                                div1.addClass('jqplot-table-legend-swatch');
+                                div1.css({backgroundColor: color, borderColor: color});
+                                td1.append(div0.append(div1));
+                            };
+                            
                             td2 = $(document.createElement('td'));
                             td2.addClass('jqplot-table-legend jqplot-table-legend-label');
                             td2.css('paddingTop', rs);
