@@ -67,18 +67,32 @@
         // prop: showMarkerStyle
         // true to draw the correct markerStyle in the legends' swatch, not only a colored box. Only used if showLineStyle is true, too.
         this.showMarkerStyle = false;
+        // Override series options
+        this.seriesOptions = null;
         $.extend(true, this, options);
-        
+
         if (this.seriesToggle) {
             $.jqplot.postDrawHooks.push(postDraw);
         }
     };
-    
+
     // called with scope of legend
     $.jqplot.EnhancedLegendRenderer.prototype.draw = function(offsets, plot) {
         var legend = this;
         if (this.show) {
-            var series = this._series;
+            var series;
+            if (this.seriesOptions) {
+              var Series = this._series[0].constructor;
+
+              series = this.seriesOptions.map(function(opts, i) {
+                var s = $.extend(new Series(opts), opts);
+                s.init(i, legend._series[0].gridBorderWidth, plot);
+                return s;
+              });
+
+            } else {
+              series = this._series;
+            }
             var s;
             var ss = 'position:absolute;';
             ss += (this.background) ? 'background:'+this.background+';' : '';
