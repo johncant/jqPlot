@@ -1,4 +1,4 @@
-/**
+/*
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
@@ -64,6 +64,9 @@
         // prop: showLineStyle
         // true to draw the correct lineStyle and lineWidth in the legends' swatch, not only a colored box.
         this.showLineStyle = false;
+        // prop: showMarkerStyle
+        // true to draw the correct markerStyle in the legends' swatch, not only a colored box. Only used if showLineStyle is true, too.
+        this.showMarkerStyle = false;
         $.extend(true, this, options);
         
         if (this.seriesToggle) {
@@ -171,6 +174,9 @@
                                 pat.lineTo(31,8);
                                 pat.closePath();
                                 ctx.stroke();
+                                if (this.showMarkerStyle && s.markerRenderer) {
+                                    s.markerRenderer.draw(16, 7, ctx, s.markerOptions);
+                                }
                                 td1.append(canvas0);
                             } else {
                                 div0 = $(document.createElement('div'));
