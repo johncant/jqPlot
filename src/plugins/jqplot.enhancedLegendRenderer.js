@@ -1,4 +1,4 @@
-/**
+/*
  * jqPlot
  * Pure JavaScript plotting plugin using jQuery
  *
@@ -175,7 +175,7 @@
                                 pat.closePath();
                                 ctx.stroke();
                                 if (this.showMarkerStyle && s.markerRenderer) {
-                                    s.markerRenderer.draw(8, 8, ctx, s.markerOptions);
+                                    s.markerRenderer.draw(16, 7, ctx, s.markerOptions);
                                 }
                                 td1.append(canvas0);
                             } else {
