@@ -175,23 +175,37 @@
                             td1 = $(document.createElement('td'));
                             td1.addClass('jqplot-table-legend jqplot-table-legend-swatch');
                             td1.css({textAlign: 'center', paddingTop: rs});
-                            if (this.showLineStyle == true) {
-                                var canvas0 = $(document.createElement('canvas'));
-                                canvas0.attr('width', '32px');
-                                canvas0.attr('height', '14px');
-                                var ctx = canvas0[0].getContext('2d');
-                                var pat = $.jqplot.LinePattern(ctx, s.linePattern);
-                                ctx.strokeStyle = s.color;
-                                ctx.lineWidth = s.lineWidth;
-                                pat.beginPath();
-                                pat.moveTo(1,8);
-                                pat.lineTo(31,8);
-                                pat.closePath();
-                                ctx.stroke();
-                                if (this.showMarkerStyle && s.markerRenderer) {
-                                    s.markerRenderer.draw(16, 7, ctx, s.markerOptions);
-                                }
-                                td1.append(canvas0);
+
+                            if (this.showLineStyle == true || this.showMarkerStyle) {
+
+                              var canvas0 = $(document.createElement('canvas'));
+                              canvas0.attr('width', '32px');
+                              canvas0.attr('height', '14px');
+                              var ctx = canvas0[0].getContext('2d');
+
+                              if (this.showLineStyle == true && s.showLine) {
+                                  var pat = $.jqplot.LinePattern(ctx, s.linePattern);
+                                  ctx.strokeStyle = s.color;
+                                  ctx.lineWidth = s.lineWidth;
+                                  ctx.lineJoin = s.lineJoin;
+                                  ctx.lineCap = s.lineCap;
+                                  pat.beginPath();
+
+                                  pat.moveTo(1,8);
+                                  pat.lineTo(31,8);
+                                  pat.closePath();
+                                  ctx.stroke();
+
+                              }
+
+                              if (this.showMarkerStyle == true && s.showMarker) {
+                                  if (this.showMarkerStyle && s.markerRenderer) {
+                                      s.markerRenderer.draw(16, 7, ctx, s.markerOptions);
+                                  }
+                              }
+
+                              td1.append(canvas0);
+
                             } else {
                                 div0 = $(document.createElement('div'));
                                 div0.addClass('jqplot-table-legend-swatch-outline');
